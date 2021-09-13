@@ -88,6 +88,12 @@ export const regex = (regex: RegExp): Predicate<SerializableLocation> =>
     (location: SerializableLocation) => regex.test(location.pathname);
 
 /**
+ * Comparison with location.pathname.
+ */
+ export const path = (path: string): Predicate<SerializableLocation> =>
+ (location: SerializableLocation) => path === location.pathname || path === `${location.pathname}/`;
+
+/**
  * Exact comparison with location.pathname.
  */
 export const exactPath = (path: string): Predicate<SerializableLocation> =>
