@@ -9,9 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improved
 - Navigation
+- Added exactPath to replace the old path fuction.
 
 ### Fixed
 - A bug that prevented the use of a base path
+- Path function now will check for path that ends with '/' as well
 
 ## [0.1.9]
 
