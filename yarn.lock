@@ -9,10 +9,10 @@
   dependencies:
     "@0cfg/utils-common" "^0.1.0"
 
-"@0cfg/utils-common@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@0cfg/utils-common/-/utils-common-0.1.0.tgz#4e5703e9e140389da0c6ccdedc6f325a02792af1"
-  integrity sha512-Oq+6qh+k3FFoh3q/ByaZmMCM4dxXkc7zTQB9Ey6yXoMPNciDCnI1TCdZaXNp+iVaEUTKEdvu2xpOq/36vMmNxA==
+"@0cfg/utils-common@^0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@0cfg/utils-common/-/utils-common-0.1.7.tgz#f75907ab6a32e93b26bb55ee5da0ad8b40d87cc0"
+  integrity sha512-3p8yvwFrw8rBS+6TOaLE9F3JzbpldmE1bw9J7zYVGvLrC9iOrKXe/NCXiSfH+lU60pjVwly7xTbdzE570hegPQ==
 
 "@babel/code-frame@7.12.11":
   version "7.12.11"
@@ -4485,7 +4485,7 @@ inquirer@^6.2.0:
     strip-ansi "^5.1.0"
     through "^2.3.6"
 
-inversify@^5.0.5:
+inversify@^5.0.5, inversify@~5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/inversify/-/inversify-5.1.1.tgz#6fbd668c591337404e005a1946bfe0d802c08730"
   integrity sha512-j8grHGDzv1v+8T1sAQ+3boTCntFPfvxLCkNcxB1J8qA0lUN+fAlSyYd+RXKvaPRL4AGyPxViutBEJHNXOyUdFQ==

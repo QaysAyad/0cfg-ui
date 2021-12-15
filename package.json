@@ -51,7 +51,7 @@
   },
   "dependencies": {
     "alert": "^5.0.10",
-    "inversify": "^5.0.5",
+    "inversify": "~5.1.1",
     "reflect-metadata": "^0.1.13",
     "ts-type-checked": "0.0.1",
     "yargs": "^16.2.0"
