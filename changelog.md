@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+## [0.2.1]
+
+### Added
+
+- The ability to wait for another component to render.
+
 ## [0.2.0]
 
 ### Improved
@@ -17,11 +23,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A bug that prevented the use of a base path
 - Path function now will check for path that ends with '/' as well
 
-## [0.1.10]
-
-### Added
-
-Adds the ability to wait for another component to render.
 
 ## [0.1.9]
 
@@ -51,7 +52,8 @@ Adds the ability to wait for another component to render.
 
 - Support inversify.js alongside HtmlComponents.
 
-[unreleased]: https://github.com/0cfg/0cfg-ui/compare/v0.2.0..HEAD
+[unreleased]: https://github.com/0cfg/0cfg-ui/compare/v0.2.1..HEAD
+[0.2.1]: https://github.com/0cfg/0cfg-ui/releases/tag/v0.2.1
 [0.2.0]: https://github.com/0cfg/0cfg-ui/releases/tag/v0.2.0
 [0.1.9]: https://github.com/0cfg/0cfg-ui/releases/tag/v0.1.9
 [0.1.8]: https://github.com/0cfg/0cfg-ui/releases/tag/v0.1.8
