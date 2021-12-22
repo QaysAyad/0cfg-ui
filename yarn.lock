@@ -9,7 +9,7 @@
   dependencies:
     "@0cfg/utils-common" "^0.1.0"
 
-"@0cfg/utils-common@^0.1.7":
+"@0cfg/utils-common@^0.1.0", "@0cfg/utils-common@^0.1.7":
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/@0cfg/utils-common/-/utils-common-0.1.7.tgz#f75907ab6a32e93b26bb55ee5da0ad8b40d87cc0"
   integrity sha512-3p8yvwFrw8rBS+6TOaLE9F3JzbpldmE1bw9J7zYVGvLrC9iOrKXe/NCXiSfH+lU60pjVwly7xTbdzE570hegPQ==

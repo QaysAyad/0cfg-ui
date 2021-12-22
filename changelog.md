@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+## [0.2.0]
+
 ### Improved
 - Navigation
 - Added exactPath to replace the old path fuction.
@@ -43,7 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Support inversify.js alongside HtmlComponents.
 
-[unreleased]: https://github.com/0cfg/0cfg-ui/compare/v0.1.9..HEAD
+[unreleased]: https://github.com/0cfg/0cfg-ui/compare/v0.2.0..HEAD
+[0.2.0]: https://github.com/0cfg/0cfg-ui/releases/tag/v0.2.0
 [0.1.9]: https://github.com/0cfg/0cfg-ui/releases/tag/v0.1.9
 [0.1.8]: https://github.com/0cfg/0cfg-ui/releases/tag/v0.1.8
 [0.1.7]: https://github.com/0cfg/0cfg-ui/releases/tag/v0.1.7
