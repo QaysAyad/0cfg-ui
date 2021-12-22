@@ -59,7 +59,10 @@ export const animationDurationLong = 300;
 @injectable()
 export class HtmlComponent implements Destroyable {
 
-
+    private resolveRendered?: (value?: void | PromiseLike<void>) => void;
+    private renderedPromise: Promise<void> = new Promise(resolve => {
+        this.resolveRendered = resolve;
+    });
     private parent_?: HtmlComponent;
     private readonly parentListeners: Set<(() => unknown)> = new Set<(() => unknown)>();
     private readonly visibilityChangeListeners: Set<((visible: boolean) => unknown)> =
@@ -165,9 +168,6 @@ export class HtmlComponent implements Destroyable {
         this.createElementAndApplyAttributes()
             .renderToTargetAndLocation(renderLocation, HtmlComponent.getRenderTarget(container));
 
-        await this.afterEveryRenderSync();
-        this.afterEveryRender();
-
         this.isVisible() &&
         this.fireVisibilityChange(this.isVisible());
 
@@ -180,6 +180,9 @@ export class HtmlComponent implements Destroyable {
         if ((Date.now() - renderStart) > timeoutBeforeWarning) {
             errStatus(`Component render took more than ${timeoutBeforeWarning} seconds.`).log();
         }
+        has(this.resolveRendered) && this.resolveRendered();
+        await this.afterEveryRenderSync();
+        this.afterEveryRender();
         return this;
     }
 
@@ -247,6 +250,9 @@ export class HtmlComponent implements Destroyable {
      *              The method will still only return once the element is fully removed from the dom.
      */
     public destroy(fadeOut: boolean = false): Promise<void> {
+        this.renderedPromise = new Promise(resolve => {
+            this.resolveRendered = resolve;
+        });
         // do not substitute has(this.element) with this.isRendered() here - subclasses may override this.isRendered
         const doDestroy: () => Promise<void> = async () => {
             if (has(this.element)) {
@@ -308,6 +314,13 @@ export class HtmlComponent implements Destroyable {
      */
     public isRendered(): boolean {
         return has(this.element);
+    }
+
+    /**
+     * Returns a promise which resolves with the next render (resets after an invocation of {@link this.destroy()}).
+     */
+    public rendered(): Promise<void> {
+        return this.renderedPromise;
     }
 
     /**

@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A bug that prevented the use of a base path
 - Path function now will check for path that ends with '/' as well
 
+## [0.1.10]
+
+### Added
+
+Adds the ability to wait for another component to render.
+
 ## [0.1.9]
 
 ### Improved
