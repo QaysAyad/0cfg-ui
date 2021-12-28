@@ -21,7 +21,7 @@
   ],
   "dependencies": {
     "@0cfg/reply-common": "^0.0.9",
-    "@0cfg/utils-common": "^0.1.7",
+    "@0cfg/utils-common": "^0.1.8",
     "inversify": "^5.0.5",
     "micromatch": "^4.0.2"
   },
