@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import {HtmlComponent} from '../ts/HtmlComponent';
 
-describe('StartPipelineService', () => {
+describe('HtmlComponent', () => {
     it('handles visibility changes', async () => {
         const parent = HtmlComponent.create();
         const child = HtmlComponent.create();
@@ -41,21 +41,21 @@ describe('StartPipelineService', () => {
             listenerCount: 1,
         });
 
-        // hiding the parent -> bot not visible
+        // hiding the parent -> both not visible
         parent.hide();
         assertBoth({
             visible: false,
             listenerCount: 2,
         });
 
-        // showing the parent again -> bot visible
+        // showing the parent again -> both visible
         parent.show();
         assertBoth({
             visible: true,
             listenerCount: 3,
         });
 
-        // hide the child independently of the parent -> parent remains visible
+        // hide the child independently from the parent -> parent remains visible
         child.hide();
         expect(parent.isVisible()).toBe(true);
         expect(parentListener).lastCalledWith(true);
@@ -72,7 +72,7 @@ describe('StartPipelineService', () => {
         expect(parentListener).lastCalledWith(true);
         expect(childListener).toBeCalledTimes(5);
 
-        // destroy the components -> bot not visible
+        // destroy the components -> both not visible
         await parent.destroy();
         expect(parent.isVisible()).toBe(false);
         expect(parentListener).lastCalledWith(false);
