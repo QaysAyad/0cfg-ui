@@ -64,14 +64,13 @@ export class HtmlComponent implements Destroyable {
         this.resolveRendered = resolve;
     });
     private parent_?: HtmlComponent;
-    private readonly parentListeners: Set<(() => unknown)> = new Set<(() => unknown)>();
-    private readonly visibilityChangeListeners: Set<((visible: boolean) => unknown)> =
-        new Set<((visible: boolean) => unknown)>();
+    private readonly visibilityChangeListeners: { lastState: boolean, listener: (visible: boolean) => void }[] = [];
 
     /**
      * Initialized to {@code false} because this component is not rendered yet.
+     * Does not respect the parent's visibility state
      */
-    private visibilityState: boolean = false;
+    private ownVisibilityState: boolean = false;
     /**
      * Set on render in {@link renderTo}.
      * Set to undefined in {@link destroy}.
@@ -116,17 +115,16 @@ export class HtmlComponent implements Destroyable {
     }
 
     public static create(htmlContent?: string, classAttr?: string, styleAttr?: string): HtmlComponent {
-        const result: HtmlComponent = new class extends HtmlComponent {
+        return new class extends HtmlComponent {
             protected readonly htmlContent?: string = htmlContent;
             protected readonly classAttr?: string = classAttr;
             protected readonly styleAttr?: string = styleAttr;
         };
-        return result;
     }
 
     protected set parent(parent: HtmlComponent | undefined) {
         this.parent_ = parent;
-        if (has(this.parent) && this.visibilityChangeListeners.size > 0) {
+        if (has(this.parent) && this.visibilityChangeListeners.length > 0) {
             this.parent.onVisibilityChange(this.myParentVisibilityListener);
         }
     }
@@ -139,6 +137,9 @@ export class HtmlComponent implements Destroyable {
      * Set the parent component of this component in order to propagate visibility changes bidirectionally.
      */
     public setParent(parent: HtmlComponent | undefined): this {
+        if (has(parent)) {
+            parent.onVisibilityChange(this.myParentVisibilityListener);
+        }
         this.parent = parent;
         return this;
     }
@@ -168,13 +169,11 @@ export class HtmlComponent implements Destroyable {
         this.createElementAndApplyAttributes()
             .renderToTargetAndLocation(renderLocation, HtmlComponent.getRenderTarget(container));
 
-        this.isVisible() &&
-        this.fireVisibilityChange(this.isVisible());
-
         if (this.hideWhenRendered) {
             this.hide();
         } else {
-            this.visibilityState = true;
+            this.ownVisibilityState = true;
+            this.fireVisibilityChange();
         }
 
         if ((Date.now() - renderStart) > timeoutBeforeWarning) {
@@ -259,7 +258,8 @@ export class HtmlComponent implements Destroyable {
                 this.element.remove();
             }
             delete this.element;
-            this.fireVisibilityChange(false);
+            this.ownVisibilityState = false;
+            this.fireVisibilityChange();
         };
         if (fadeOut) {
             return new Promise<void>(resolve => {
@@ -340,21 +340,20 @@ export class HtmlComponent implements Destroyable {
 
     /**
      * Attaches a listener which is invoked after a visibility change (hidden or shown).
+     * Is idempotent.
      */
-    public onVisibilityChange(listener: (visible: boolean) => unknown): void {
-        this.visibilityChangeListeners.add(listener);
-        if (has(this.parent) && this.visibilityChangeListeners.size === 1) {
-            // the first listener that we have. we also register at the parent then
-            this.parent.onVisibilityChange(this.myParentVisibilityListener);
+    public onVisibilityChange(listener: () => void): void {
+        if (!has(this.visibilityChangeListeners.find(e => e.listener === listener))) {
+            this.visibilityChangeListeners.push({lastState: this.isVisible(), listener});
         }
     }
 
     /**
      * Removes a visibility change listener.
      */
-    public removeVisibilityChangeListener(listener: (visible: boolean) => unknown): void {
-        this.visibilityChangeListeners.delete(listener);
-        if (has(this.parent) && this.visibilityChangeListeners.size === 0) {
+    public removeVisibilityChangeListener(listener: (visible: boolean) => void): void {
+        this.visibilityChangeListeners.splice(this.visibilityChangeListeners.findIndex(e => e.listener === listener));
+        if (has(this.parent) && this.visibilityChangeListeners.length === 0) {
             // deregister from the parent as we are not interested in visibility changes
             // anymore
             this.parent.removeVisibilityChangeListener(this.myParentVisibilityListener);
@@ -362,7 +361,7 @@ export class HtmlComponent implements Destroyable {
     }
 
     public isVisible(): boolean {
-        return this.visibilityState && (!has(this.parent) || this.parent.isVisible());
+        return this.ownVisibilityState && (!has(this.parent) || this.parent.isVisible());
     }
 
     /**
@@ -371,8 +370,8 @@ export class HtmlComponent implements Destroyable {
     public show(): void {
         if (this.isRendered()) {
             this.element?.classList.remove('hidden');
-            this.visibilityState = true;
-            this.fireVisibilityChange(this.isVisible());
+            this.ownVisibilityState = true;
+            this.fireVisibilityChange();
         }
     }
 
@@ -382,8 +381,8 @@ export class HtmlComponent implements Destroyable {
     public hide(): void {
         if (this.isRendered()) {
             this.element?.classList.add('hidden');
-            this.visibilityState = false;
-            this.fireVisibilityChange(this.isVisible());
+            this.ownVisibilityState = false;
+            this.fireVisibilityChange();
         } else {
             this.hideWhenRendered = true;
         }
@@ -435,21 +434,25 @@ export class HtmlComponent implements Destroyable {
 
     /**
      * overwrite this if you want to do something like mind your own visibility state (see HideableHtmlComponent)
-     * @param visible
      */
-    protected parentVisibilityChanged(visible: boolean): void {
-        this.fireVisibilityChange(visible);
+    protected parentVisibilityChanged(): void {
+        this.fireVisibilityChange();
     }
 
     /**
-     * Will inform all listeners of a visibility state change.
-     * will remember the old state and only fire if the state changes
-     * @param visible
+     * Will inform all listeners of the current visibility state.
+     * Will not fire the same state twice in a row.
      */
-    protected fireVisibilityChange(visible: boolean): void {
-        this.visibilityChangeListeners.forEach(listener => listener(visible));
-        this.visibilityState = visible;
+    protected fireVisibilityChange(): void {
+        const newState = this.isVisible();
+
+        this.visibilityChangeListeners.forEach(e => {
+            if (e.lastState !== newState) {
+                e.listener(newState);
+                e.lastState = newState;
+            }
+        });
     }
 
-    private myParentVisibilityListener = (visible: boolean): void => this.parentVisibilityChanged(visible);
+    private myParentVisibilityListener = (): void => this.parentVisibilityChanged();
 }
