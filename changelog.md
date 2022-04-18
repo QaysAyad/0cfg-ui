@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+## [0.2.3]
+
 ### Fixed
 Visibility state bugs in the html component.
 
@@ -59,7 +61,8 @@ Visibility state bugs in the html component.
 
 - Support inversify.js alongside HtmlComponents.
 
-[unreleased]: https://github.com/0cfg/0cfg-ui/compare/v0.2.2..HEAD
+[unreleased]: https://github.com/0cfg/0cfg-ui/compare/v0.2.3..HEAD
+[0.2.2]: https://github.com/0cfg/0cfg-ui/releases/tag/v0.2.3
 [0.2.2]: https://github.com/0cfg/0cfg-ui/releases/tag/v0.2.2
 [0.2.1]: https://github.com/0cfg/0cfg-ui/releases/tag/v0.2.1
 [0.2.0]: https://github.com/0cfg/0cfg-ui/releases/tag/v0.2.0
