@@ -177,7 +177,7 @@ export class HtmlComponent implements Destroyable {
         }
 
         if ((Date.now() - renderStart) > timeoutBeforeWarning) {
-            errStatus(`Component render took more than ${timeoutBeforeWarning} seconds.`).log();
+            errStatus(`Component render took more than ${timeoutBeforeWarning} ms.`).log();
         }
         has(this.resolveRendered) && this.resolveRendered();
         await this.afterEveryRenderSync();
