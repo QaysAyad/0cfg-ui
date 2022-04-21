@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Improved
+- Added exactPath to replace the old path fuction.
+
+### Fixed
+- Path function now will check for path that ends with '/' as well
+
 ## [0.2.1]
 
 ### Added
