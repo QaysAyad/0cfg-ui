@@ -1,6 +1,6 @@
 {
   "name": "@0cfg/ui-browser",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "author": "Jonas Zipprick <jonas@codesphere.cloud>",
   "license": "MIT",
   "private": false,
@@ -13,7 +13,7 @@
     "_deleteBuildTmp": "rimraf .build-tmp",
     "_deleteNodeModules": "rimraf node_modules",
     "clean": "run-s _deleteBuildTmp _deleteLib _deleteNodeModules",
-    "test": "jest --passWithNoTests",
+    "test": "jest",
     "build": "tsc"
   },
   "files": [
@@ -27,8 +27,7 @@
   },
   "devDependencies": {
     "@types/micromatch": "^4.0.1",
-    "jest-puppeteer": "4.4.0",
-    "puppeteer": "5.5.0"
+    "jest": "~27.5.1"
   },
   "gitHead": "a97dc31a2c8532761c234ee1ccbf74cf4c30aeff",
   "publishConfig": {

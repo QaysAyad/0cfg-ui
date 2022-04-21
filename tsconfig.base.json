@@ -20,8 +20,8 @@
     "emitDecoratorMetadata": true
   },
   "exclude": [
-    "**/__test__/**",
-    "**/__mock__/**",
+    "**/__tests__/**",
+    "**/__mocks__/**",
     "**/lib/**"
   ]
 }
